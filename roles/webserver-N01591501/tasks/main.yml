@@ -1,0 +1,26 @@
+---
+- name: Install Apache web server
+  package:
+    name: apache2
+    state: present
+
+- name: Copy files to web server
+  copy:
+    src: "{{ item }}"
+    dest: "/var/www/html/index.html"
+  loop:
+    - vm1.html
+    - vm2.html
+    - vm3.html
+  notify: Restart Apache
+
+- name: Set permissions on files
+  file:
+    path: "/var/www/html/index.html"
+    mode: "0444"
+
+- name: Ensure Apache service is running
+  systemd:
+    name: apache2
+    enabled: yes
+    state: started

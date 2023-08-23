@@ -1,0 +1,9 @@
+---
+- name: N01591501 Playbook
+  hosts: linux
+  become: yes
+  roles:
+    - roles/datadisk-N01591501
+    - roles/profile-N01591501
+    - roles/user-N01591501
+    - roles/webserver-N01591501

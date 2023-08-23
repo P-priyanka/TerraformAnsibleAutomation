@@ -1,0 +1,25 @@
+[linux]
+n01591501-vm1.centralindia.cloudapp.azure.com
+n01591501-vm2.centralindia.cloudapp.azure.com
+n01591501-vm3.centralindia.cloudapp.azure.com
+
+[windows]
+tf-labsn1501-w-vm1.centralindia.cloudapp.azure.com
+ 
+[os:children]
+linux
+windows
+
+[linux:vars]
+ansible_user="user100"
+ansible_ssh_private_key_file="/mnt/c/Users/Admin/.ssh/id_rsa"
+ansible_ssh_common_args='-o StrictHostKeyChecking=False'
+
+
+[windows:vars]
+ansible_user="priyanka_n01591501"
+ansible_password="Winadm!23"
+ansible_connection=winrm
+ansible_port=5985
+ansible_winrm_transport=ntlm
+ansible_winrm_server_cert_validation=ignore

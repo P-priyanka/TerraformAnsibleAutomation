@@ -1,0 +1,25 @@
+---
+- name: Create groups
+  group:
+    name: "{{ item.name }}"
+  loop: "{{ groups }}"
+
+- name: Create users
+  user:
+    name: "{{ item.name }}"
+    groups: "{{ groups | map(attribute='name') | join(',') }}"
+    append: yes
+  loop: "{{ users }}"
+  register: created_users
+
+- name: Generate SSH keys for users
+  community.crypto.openssh_keypair:
+    path: "/home/{{ item.item.name }}/.ssh/id_rsa"
+    size: 2048
+  loop: "{{ created_users.results }}"
+
+- name: Distribute SSH keys
+  authorized_key:
+    user: "{{ item.item.name }}"
+    key: "{{ lookup('file', '/home/{{ item.item.name }}/.ssh/id_rsa.pub') }}"
+  loop: "{{ created_users.results }}"

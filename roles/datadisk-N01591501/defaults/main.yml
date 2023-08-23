@@ -1,0 +1,9 @@
+---
+data_disk_size_gb: 10
+partitions:
+  - size_gb: 4
+    fs_type: xfs
+    mount_point: /part1
+  - size_gb: 5
+    fs_type: ext4
+    mount_point: /part2

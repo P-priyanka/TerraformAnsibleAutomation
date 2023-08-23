@@ -1,0 +1,8 @@
+---
+users:
+  - name: user100
+  - name: user200
+  - name: user300
+groups:
+  - name: cloudadmins
+  - name: wheel

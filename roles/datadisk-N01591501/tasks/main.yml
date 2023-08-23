@@ -1,0 +1,30 @@
+---
+- name: Partition and mount data disks
+  parted:
+    device: /dev/sdb
+    number: "{{ loop.index }}"
+    state: present
+    align: cylinder
+    size: "{{ item.size_gb }}GB"
+    label: gpt
+  loop: "{{ partitions }}"
+  loop_control:
+    loop_var: item
+
+- name: Create filesystem on partition {{ item.size_gb }}
+  filesystem:
+    fstype: "{{ item.fs_type }}"
+    dev: "/dev/sdb{{ loop.index }}"
+  loop: "{{ partitions }}"
+  loop_control:
+    loop_var: item
+
+- name: Mount partition {{ item.size_gb }}
+  mount:
+    path: "{{ item.mount_point }}"
+    src: "/dev/sdb{{ loop.index }}"
+    fstype: "{{ item.fs_type }}"
+    state: mounted
+  loop: "{{ partitions }}"
+  loop_control:
+    loop_var: item
